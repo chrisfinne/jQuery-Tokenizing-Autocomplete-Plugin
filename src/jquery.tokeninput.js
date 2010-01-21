@@ -21,6 +21,7 @@ $.fn.tokenInput = function (url, options) {
         tokenLimit: null,
         jsonContainer: null,
         method: "GET",
+        removeAlreadySelected: false,
         contentType: "json",
         queryParam: "q",
         onResult: null
@@ -468,6 +469,7 @@ $.TokenList = function (input, settings) {
 
             for(var i in results) {
                 if (results.hasOwnProperty(i)) {
+                  if (  ! settings.removeAlreadySelected || jQuery.inArray(''+results[i].id, hidden_input.val().split(',')) == -1 ) {
                     var this_li = $("<li>"+highlight_term(results[i].name, query)+"</li>")
                                       .appendTo(dropdown_ul);
 
@@ -482,6 +484,7 @@ $.TokenList = function (input, settings) {
                     }
 
                     $.data(this_li.get(0), "tokeninput", {"id": results[i].id, "name": results[i].name});
+                  }
                 }
             }
 
