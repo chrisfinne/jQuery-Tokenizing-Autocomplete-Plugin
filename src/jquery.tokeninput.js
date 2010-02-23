@@ -24,6 +24,7 @@ $.fn.tokenInput = function (url, options) {
         removeAlreadySelected: false,
         contentType: "json",
         queryParam: "q",
+        enableBackspaceDelete: false,
         onResult: null
     }, options);
 
@@ -142,6 +143,8 @@ $.TokenList = function (input, settings) {
                     previous_token = input_token.prev();
 
                     if(!$(this).val().length) {
+                        if (!settings.enableBackspaceDelete)
+                          return false;
                         if(selected_token) {
                             delete_token($(selected_token));
                         } else if(previous_token.length) {
