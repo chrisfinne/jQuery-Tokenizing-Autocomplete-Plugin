@@ -163,8 +163,14 @@ $.TokenList = function (input, settings) {
 
                 case KEY.TAB:
                 case KEY.RETURN:
-                case KEY.COMMA:
                   if(selected_dropdown_item) {
+                    add_token($(selected_dropdown_item));
+                    return false;
+                  }
+                  break;
+
+                case KEY.COMMA:
+                  if(settings.tokenSeparator ==',' && selected_dropdown_item) {
                     add_token($(selected_dropdown_item));
                     return false;
                   }
