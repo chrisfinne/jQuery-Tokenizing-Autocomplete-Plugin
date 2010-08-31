@@ -19,6 +19,7 @@ $.fn.tokenInput = function (url, options) {
         searchDelay: 300,
         minChars: 1,
         tokenLimit: null,
+        tokenSeparator: ",",
         jsonContainer: null,
         method: "GET",
         removeAlreadySelected: false,
@@ -281,7 +282,7 @@ $.TokenList = function (input, settings) {
                 hide_dropdown();
 
                 // Save this token id
-                var id_string = li_data[i].id + ","
+                var id_string = li_data[i].id + settings.tokenSeparator
                 hidden_input.val(hidden_input.val() + id_string);
             }
         }
@@ -335,6 +336,12 @@ $.TokenList = function (input, settings) {
 
     // Add a token to the token list based on user input
     function add_token (item) {
+        if(settings.tokenLimit != null && token_count >= settings.tokenLimit) {
+            input_box.val("").hide();
+            hide_dropdown();
+            return;
+        }
+
         var li_data = $.data(item.get(0), "tokeninput");
         var this_token = insert_token(li_data.id, li_data.name);
 
@@ -347,7 +354,7 @@ $.TokenList = function (input, settings) {
         hide_dropdown();
 
         // Save this token id
-        var id_string = li_data.id + ","
+        var id_string = li_data.id + settings.tokenSeparator;
         hidden_input.val(hidden_input.val() + id_string);
         
         token_count++;
@@ -413,8 +420,8 @@ $.TokenList = function (input, settings) {
 
         // Delete this token's id from hidden input
         var str = hidden_input.val()
-        var start = str.indexOf(token_data.id+",");
-        var end = str.indexOf(",", start) + 1;
+        var start = str.indexOf(token_data.id + settings.tokenSeparator);
+        var end = str.indexOf(settings.tokenSeparator, start) + 1;
 
         if(end >= str.length) {
             hidden_input.val(str.slice(0, start));
