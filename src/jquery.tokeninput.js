@@ -165,8 +165,8 @@ $.TokenList = function (input, settings) {
                 case KEY.RETURN:
                   if(selected_dropdown_item) {
                     add_token($(selected_dropdown_item));
-                    return false;
                   }
+                  return false;
                   break;
 
                 case KEY.COMMA:
