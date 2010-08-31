@@ -419,9 +419,10 @@ $.TokenList = function (input, settings) {
         input_box.focus();
 
         // Delete this token's id from hidden input
-        var str = hidden_input.val()
+        var str = hidden_input.val();
+        var tokenText = token_data.id + settings.tokenSeparator;
         var start = str.indexOf(token_data.id + settings.tokenSeparator);
-        var end = str.indexOf(settings.tokenSeparator, start) + 1;
+        var end = start + tokenText.length;
 
         if(end >= str.length) {
             hidden_input.val(str.slice(0, start));
