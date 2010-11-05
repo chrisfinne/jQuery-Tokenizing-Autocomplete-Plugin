@@ -10,9 +10,9 @@
 
 (function($) {
 
-$.fn.tokenInput = function (url, options) {
+$.fn.tokenInput = function (url_or_array, options) {
     var settings = $.extend({
-        url: url,
+        url: url_or_array,
         hintText: "Type in a search term",
         noResultsText: "No results",
         searchingText: "Searching...",
@@ -562,7 +562,6 @@ $.TokenList = function (input, settings) {
         if(cached_results) {
             populate_dropdown(query, cached_results);
         } else {
-			var queryStringDelimiter = settings.url.indexOf("?") < 0 ? "?" : "&";
 			var callback = function(results) {
 			  if($.isFunction(settings.onResult)) {
 			      results = settings.onResult.call(this, results);
@@ -571,11 +570,16 @@ $.TokenList = function (input, settings) {
               populate_dropdown(query, settings.jsonContainer ? results[settings.jsonContainer] : results);
             };
             
-            if(settings.method == "POST") {
-			    $.post(settings.url + queryStringDelimiter + settings.queryParam + "=" + encodeURIComponent(query), {}, callback, settings.contentType);
-		    } else {
-		        $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + encodeURIComponent(query), {}, callback, settings.contentType);
-		    }
+			if ($.isArray(settings.url)) {
+				callback(settings.url);
+			} else {
+				var queryStringDelimiter = settings.url.indexOf("?") < 0 ? "?" : "&";
+	            if(settings.method == "POST") {
+				    $.post(settings.url + queryStringDelimiter + settings.queryParam + "=" + encodeURIComponent(query), {}, callback, settings.contentType);
+			    } else {
+			        $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + encodeURIComponent(query), {}, callback, settings.contentType);
+			    }
+			}
         }
     }
 };
