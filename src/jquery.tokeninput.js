@@ -571,7 +571,14 @@ $.TokenList = function (input, settings) {
             };
             
 			if ($.isArray(settings.url)) {
-				callback(settings.url);
+			  var filtered_array=[];
+			  var query_regexp = new RegExp(query,'i');
+			  $.each(settings.url,function(index,value) {
+			    if (value['name'].match(query_regexp)) {
+			      filtered_array.push(value);
+			    }
+			  });
+				callback(filtered_array);
 			} else {
 				var queryStringDelimiter = settings.url.indexOf("?") < 0 ? "?" : "&";
 	            if(settings.method == "POST") {
